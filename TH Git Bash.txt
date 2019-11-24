@@ -1,0 +1,11 @@
+$ cd ~/myGit
+$ git config --global user.name "Quoc Hung"
+$ git config --global user.email "hungtnq62@wru.vn"
+$ git clone https://github.com/Hungtnq/1651060749
+$ cd ~/myGit/1651060749
+$ git add BTTH1.rar
+$ git commit -m "Bai TH1"
+$ git push origin master
+$ git add "TH Git Bash.txt"
+$ git commit -m "Bai TH2"
+$ git push origin master
