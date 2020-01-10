@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 30, 2019 lúc 05:31 PM
+-- Thời gian đã tạo: Th1 10, 2020 lúc 11:44 AM
 -- Phiên bản máy phục vụ: 10.1.36-MariaDB
 -- Phiên bản PHP: 7.2.11
 
@@ -22,6 +22,24 @@ SET time_zone = "+00:00";
 -- Cơ sở dữ liệu: `project_1`
 --
 
+DELIMITER $$
+--
+-- Thủ tục
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `addStuToClass_ma` (`maSV` INT(10), `maLop` INT(10))  BEGIN
+	INSERT INTO diem(masv,malop) VALUES(maSV,maLop);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Banish` (IN `maSV` VARCHAR(30), IN `maLop` INT(10))  BEGIN
+    UPDATE diem SET diemthi = 0 where masv = maSV and malop = maLop;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `DelClass` (IN `maLop` INT(10))  BEGIN
+	DELETE FROM lophoc where malop = maLop;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -37,6 +55,13 @@ CREATE TABLE `baiviet` (
   `ngaydang` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `baiviet`
+--
+
+INSERT INTO `baiviet` (`mabv`, `tieude`, `tomtat`, `noidung`, `maqt`, `ngaydang`) VALUES
+(1, 'first', 'afdfdsfsdf', 'sfsdfsdfs', 1, '2020-01-08');
+
 -- --------------------------------------------------------
 
 --
@@ -50,6 +75,13 @@ CREATE TABLE `diem` (
   `diemthi` float DEFAULT NULL,
   `diemhp` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `diem`
+--
+
+INSERT INTO `diem` (`masv`, `malop`, `diemqt`, `diemthi`, `diemhp`) VALUES
+(1, 1, 9, 10, NULL);
 
 -- --------------------------------------------------------
 
@@ -68,6 +100,13 @@ CREATE TABLE `giangvien` (
   `id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `giangvien`
+--
+
+INSERT INTO `giangvien` (`magv`, `tengv`, `quequan`, `ngaysinh`, `gioitinh`, `CMTND`, `maNg`, `id`) VALUES
+(1, 'Quang Huy', 'Ha Noi', '1995-04-05', 'nam', 45465760, 1, 23);
+
 -- --------------------------------------------------------
 
 --
@@ -79,6 +118,13 @@ CREATE TABLE `khoa` (
   `tenK` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `khoa`
+--
+
+INSERT INTO `khoa` (`maK`, `tenK`) VALUES
+(1, 'CNTT');
+
 -- --------------------------------------------------------
 
 --
@@ -88,14 +134,20 @@ CREATE TABLE `khoa` (
 CREATE TABLE `lophoc` (
   `malop` int(10) NOT NULL,
   `tenlop` varchar(30) NOT NULL,
-  `sldiem` int(10) DEFAULT NULL,
-  `trongso` char(3) NOT NULL,
+  `trongso` float NOT NULL,
   `Namhoc` varchar(10) NOT NULL,
   `Kyhoc` varchar(10) NOT NULL,
-  `Giaidoan` varchar(10) NOT NULL,
+  `Giaidoan` varchar(10) DEFAULT NULL,
   `mamon` int(10) NOT NULL,
   `magv` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `lophoc`
+--
+
+INSERT INTO `lophoc` (`malop`, `tenlop`, `trongso`, `Namhoc`, `Kyhoc`, `Giaidoan`, `mamon`, `magv`) VALUES
+(1, 'ATBM.01', 0.4, '2019_2020', '2', '1', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -109,6 +161,13 @@ CREATE TABLE `monhoc` (
   `maNg` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `monhoc`
+--
+
+INSERT INTO `monhoc` (`mamon`, `tenmon`, `maNg`) VALUES
+(1, 'An toan bao mat', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -120,6 +179,13 @@ CREATE TABLE `nganh` (
   `tenNg` varchar(30) NOT NULL,
   `maK` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `nganh`
+--
+
+INSERT INTO `nganh` (`maNg`, `tenNg`, `maK`) VALUES
+(1, 'CNTT', 1);
 
 -- --------------------------------------------------------
 
@@ -137,6 +203,13 @@ CREATE TABLE `quanly` (
   `id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `quanly`
+--
+
+INSERT INTO `quanly` (`maql`, `tenql`, `quequan`, `ngaysinh`, `gioitinh`, `CMTND`, `id`) VALUES
+(1, 'Thanh Lien', 'Ha Noi', '1995-04-05', 'nu', 45465764, 22);
+
 -- --------------------------------------------------------
 
 --
@@ -152,6 +225,13 @@ CREATE TABLE `quantri` (
   `CMTND` int(12) NOT NULL,
   `id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `quantri`
+--
+
+INSERT INTO `quantri` (`maqt`, `tenqt`, `quequan`, `ngaysinh`, `gioitinh`, `CMTND`, `id`) VALUES
+(1, 'Duc Manh', 'Vinh', '1990-04-05', 'nam', 45465768, 19);
 
 -- --------------------------------------------------------
 
@@ -170,6 +250,14 @@ CREATE TABLE `sinhvien` (
   `id` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Đang đổ dữ liệu cho bảng `sinhvien`
+--
+
+INSERT INTO `sinhvien` (`masv`, `tensv`, `quequan`, `ngaysinh`, `gioitinh`, `CMTND`, `maNg`, `id`) VALUES
+(1, 'Quoc Hung', 'Ha Noi', '1998-04-05', 'nam', 45465767, 1, 20),
+(2, 'Hong Thuy', 'Hai Duong', '1997-12-31', 'nu', 45465762, 1, 24);
+
 -- --------------------------------------------------------
 
 --
@@ -179,20 +267,23 @@ CREATE TABLE `sinhvien` (
 CREATE TABLE `taikhoan` (
   `id` int(10) NOT NULL,
   `tenTK` varchar(30) NOT NULL,
-  `matkhau` varchar(30) NOT NULL,
+  `matkhau` varchar(100) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `chucvu` varchar(10) DEFAULT NULL
+  `chucvu` varchar(10) DEFAULT NULL,
+  `thoigian` int(10) DEFAULT NULL,
+  `trangthai` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Đang đổ dữ liệu cho bảng `taikhoan`
 --
 
-INSERT INTO `taikhoan` (`id`, `tenTK`, `matkhau`, `email`, `chucvu`) VALUES
-(1, 'quochung', 'abcabc', 'hung@gmail.com', 'sinhvien'),
-(2, 'quanghuy', '123456', 'huy@gmail.com', 'giangvien'),
-(3, 'thanhlien', '123456', 'lien@gmail.com', 'quanly'),
-(4, 'ducmanh', '123456', 'manh@gmail.com', 'quantri');
+INSERT INTO `taikhoan` (`id`, `tenTK`, `matkhau`, `email`, `chucvu`, `thoigian`, `trangthai`) VALUES
+(19, 'ducmanh', 'c3c18ef619baff128b11ef1f6c9d360c', 'manh@gmail.com', 'quantri', 1578625759, 1),
+(20, 'quochung', 'd2210e19906ba471f0f8bb91b840bcc7', 'hung@gmail.com', 'sinhvien', 1578627263, 1),
+(22, 'thanhlien', '369f86984c58946fd2a96f2ed5fcdac9', 'lien@gmail.com', 'quanly', 1578627379, 1),
+(23, 'quanghuy', '183a04c130590ce80f32527a8b68f888', 'huy@gmail.com', 'giangvien', 1578627480, 1),
+(24, 'hongthuy', '8f3a5b603d7771344ca0f4569043615c', 'thuy@gmail.com', 'sinhvien', 1578649128, 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -284,7 +375,7 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT cho bảng `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
